@@ -1,0 +1,11 @@
+.Searchfields {
+	height: 300px;
+	width: 500px;
+	font-size: 15pt;
+	display: flex;
+	flex-direction: column;
+}
+.divider {
+	display: flex;
+	justify-content: space-between;
+}

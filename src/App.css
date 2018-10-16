@@ -1,0 +1,10 @@
+*{
+	margin:auto;
+}
+.centeredButton {
+	display: flex;
+	flex-direction: column;
+	padding: 1rem;
+	margin-bottom: 2rem;
+	border-radius: 5px;
+}
