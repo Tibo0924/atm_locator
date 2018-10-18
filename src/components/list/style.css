@@ -1,4 +1,6 @@
 .resultList {
-	width: 200px;
-	height: 200px;
+	height: 52%;
+	background-color: tomato;
+	overflow: scroll;
+
 }

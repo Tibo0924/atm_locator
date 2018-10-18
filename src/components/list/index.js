@@ -1,20 +1,31 @@
 import React from 'react';
 import './style.css';
+import { ListGroup ,Button } from 'reactstrap/';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, } from 'reactstrap';
+
 
 const List = (props) => {
-  // https://maps.google.com/?q=<lat>,<lng>
-  /* <a href="https://maps.google.com/?q=${longitude},${latitude}"></a> */
-  /* console.log( props,props[1].cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude)} */
+	console.log(props)
   return (
-    <div className="resultList">
-      
-       {  props.closestATM.map((elem,i) => {
-           return (<li>{i}</li>)
-           })
-        
-       }
-    </div> 
+    <ListGroup>
+			{props.closestATM.map((elem,i) => {
+				const geo = elem.cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates;
+				const address = elem.cashpoint.Location.PostalAddress.AddressLine;
+				const {PostCode,StreetName} = elem.cashpoint.Location.PostalAddress;
+				
+				return (
+					<Card>
+						<CardBody color="info" key={i} > 
+							<CardTitle>{address} - {StreetName}</CardTitle>
+							<CardSubtitle>{PostCode}</CardSubtitle>
+							<CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+							<Button  color="danger"href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}>ATM location</Button>
+						</CardBody>
+					</Card>	
+				)}
+			)}
+    </ListGroup> 
   )
 }
-
 export default List
