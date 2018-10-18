@@ -1,10 +1,11 @@
 *{
 	margin:auto;
 }
-.centeredButton {
-	display: flex;
-	flex-direction: column;
-	padding: 1rem;
-	margin-bottom: 2rem;
-	border-radius: 5px;
+.componentWrapper {
+	margin: auto;
+  width: 50%;
+  height: 48rem;
+  margin-top: 5rem;
+	border: 2px solid black;
+	border-radius: 10px;
 }
