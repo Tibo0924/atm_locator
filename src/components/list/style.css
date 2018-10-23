@@ -2,5 +2,14 @@
 	height: 52%;
 	background-color: tomato;
 	overflow: scroll;
+}
+.card {
+	width: -webkit-fill-available;
+}
+.card-body {
+	width: 100%;
+}
 
+.hidden {
+	display: none;
 }

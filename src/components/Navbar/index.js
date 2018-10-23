@@ -1,5 +1,5 @@
 import React from 'react'
-import './style.css'
+
 import {
 	Collapse,
   Navbar,
@@ -14,25 +14,35 @@ import {
 	DropdownItem } from 'reactstrap';
 	import { BrowserRouter as Router } from 'react-router-dom';
 	import 'font-awesome/css/font-awesome.min.css'
+	import './style.css'
 
 
 
 	const Navigation = () => {
 		return (
 			<Navbar className="navbar navbar-expand-lg">
-				<NavItem className="nav-item">
-					<i className="fa fa-coffee" aria-hidden="true"></i>
-				</NavItem>
-				<NavItem className="nav-item">
-					<i class="fa fa-share-square-o" aria-hidden="true"></i>	
-				</NavItem>
-				<NavItem className="nav-item">
-					<i className="fa fa-ellipsis-h"></i>
-				</NavItem>
-				<NavItem>				
-					<i class="fa fa-user-circle-o" aria-hidden="true"></i>
-				</NavItem>
-
+				<div className="nav-item">
+					<a href="buymeacoff.ee/dN0zCMVqU">
+						<i className="fa fa-coffee" aria-hidden="true"></i>
+					</a>
+					<label htmlFor="icons">Buy me a coffee</label>							
+				</div>
+				<div className="nav-item">
+					<i className="fa fa-share-square-o" aria-hidden="true"></i>	
+					<label htmlFor="icons">Share </label>													
+				</div>
+				<div className="nav-item">
+					<a>
+						<i className="fa fa-ellipsis-h"></i>
+					</a>
+					<label htmlFor="icons">Other</label>							
+				</div>
+				<div className="nav-item">				
+					<a href="https://tiborkeri.com" target="_blank">
+						<i className="fa fa-user-circle-o" aria-hidden="true"></i>
+					</a>
+					<label htmlFor="icons">About me</label>														
+				</div>
 			</Navbar>
 	)
 }

@@ -3,24 +3,32 @@ import './style.css';
 import { ListGroup ,Button } from 'reactstrap/';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, } from 'reactstrap';
-
+import { v4 } from 'uuid';
 
 const List = (props) => {
-	console.log(props)
+	
   return (
-    <ListGroup>
-			{props.closestATM.map((elem,i) => {
+    <ListGroup >
+			{props.closestATM.map(elem => {
 				const geo = elem.cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates;
 				const address = elem.cashpoint.Location.PostalAddress.AddressLine;
 				const {PostCode,StreetName} = elem.cashpoint.Location.PostalAddress;
-				
+				const atmServices = elem.cashpoint.ATMServices.map(service => {return <li key={v4()}>{service}</li>});
+        const isHidden = elem.display ? '' : 'hidden' ;
 				return (
-					<Card>
-						<CardBody color="info" key={i} > 
+					<Card key={elem.id} onClick={() => props.showDetails(elem.id)}>
+						<CardBody> 
 							<CardTitle>{address} - {StreetName}</CardTitle>
-							<CardSubtitle>{PostCode}</CardSubtitle>
-							<CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-							<Button  color="danger"href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}>ATM location</Button>
+							<CardSubtitle className={isHidden}>{PostCode}</CardSubtitle>
+							<CardText className={isHidden}>
+                {atmServices}
+								<Button   
+                  color="danger"
+                  href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}
+                >
+                  ATM location
+                </Button>
+							</CardText>
 						</CardBody>
 					</Card>	
 				)}
