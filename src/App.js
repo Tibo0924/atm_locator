@@ -23,13 +23,19 @@ class App extends Component {
         const ownLongitude = position.coords.longitude;
         // console.log('ownLatide:',ownLatitude,'ownLongitude:',ownLongitude,)
 
-        fetch('https://trintproxy-bowwhozuws.now.sh/api')
+        fetch('https://atlas.api.barclays/open-banking/v2.1/atms')
           .then(data => data.json())
           .then(data => this.handleResponse(data, ownLatitude, ownLongitude));
       });
     } else {
       console.log('sorry something went wrong Tibi');
     }
+  }
+  customFetch = (bankName, find) => {
+    const api = `https://atlas.api.${bankName}/open-banking/v2.1/${find}`
+    fetch(api)
+      .then(data => data.json())
+      .then(data => this.handleResponse(data, ownLatitude, ownLongitude))
   }
 
   handleResponse = (data, ownLatitude, ownLongitude) => {

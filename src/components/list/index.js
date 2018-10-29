@@ -7,16 +7,17 @@ import './style.css';
 
 const List = props => (
   <ListGroup>
-    {props.closestATM.map((elem) => {
+    {props.closestATM.map((elem, index) => {
       const geo = elem.cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates;
       const address = elem.cashpoint.Location.PostalAddress.AddressLine;
       const { PostCode, StreetName } = elem.cashpoint.Location.PostalAddress;
       const atmServices = elem.cashpoint.ATMServices.map(service => <li key={v4()}>{service}</li>);
-      const isHidden = elem.display ? '' : 'hidden';
+      const isHidden = elem.display ? 'hidden' : '';
+      const isAddress = address ? `${address} - ${StreetName}` : `${StreetName}`;
       return (
         <Card key={elem.id} onClick={() => props.showDetails(elem.id)}>
           <CardBody>
-            <CardTitle>{address} - {StreetName}</CardTitle>
+            <CardTitle>{index + 1} {isAddress} </CardTitle>
             <CardSubtitle className={isHidden}>{PostCode}</CardSubtitle>
             <CardText className={isHidden}>
               {atmServices}
@@ -24,7 +25,7 @@ const List = props => (
                 color="danger"
                 href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}
               >
-                ATM location
+                Show it on Google maps
               </Button>
             </CardText>
           </CardBody>
