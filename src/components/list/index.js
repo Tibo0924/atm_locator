@@ -20,7 +20,7 @@ const List = props => (
             <CardTitle>{index + 1} {isAddress} </CardTitle>
             <CardSubtitle className={isHidden}>{PostCode}</CardSubtitle>
             <CardText className={isHidden}>
-              {atmServices}
+            Services{atmServices}
               <Button
                 color="danger"
                 href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}

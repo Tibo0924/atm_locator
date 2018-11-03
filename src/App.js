@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import { v4 } from 'uuid';
 import Search from './components/Search';
@@ -16,32 +17,59 @@ class App extends Component {
   componentDidMount() {
     this.getCurrentPosition();
   }
+
   getCurrentPosition = () => {
+    console.log('getting current pos');
     if ('geolocation' in navigator) {
+      console.log(navigator);
       navigator.geolocation.getCurrentPosition((position) => {
         const ownLatitude = position.coords.latitude;
         const ownLongitude = position.coords.longitude;
-        // console.log('ownLatide:',ownLatitude,'ownLongitude:',ownLongitude,)
-
-        fetch('https://atlas.api.barclays/open-banking/v2.1/atms')
-          .then(data => data.json())
-          .then(data => this.handleResponse(data, ownLatitude, ownLongitude));
+        console.log(ownLatitude, ownLongitude);
+        this.callAPI(ownLatitude, ownLongitude);
+        // const criteria = this.state.update.checked ? 'branches' : 'atms';
+        // const APIcollection = {
+        //   Nationalwest: 'https://openapi.natwest.com/open-banking/v2.2/branches',
+        //   Santander: 'openbanking.santander.co.uk/sanuk/external/open-banking/v2.2/branches',
+        //   Lloyds: 'https://api.lloydsbank.com/open-banking/v2.2/branches',
+        //   Barclays: 'https://atlas.api.barclays/open-banking/v2.2/branches',
+        //   BankofIrelanduk: 'https://openapi.bankofireland.com/open-banking/v2.2/branches',
+        //   Bankofscotland: 'https://api.bankofscotland.co.uk/open-banking/v2.2/branches',
+        //   RoyalbankofScotland: 'https://openapi.rbs.co.uk/open-banking/v2.2/branches',
+        //   Halifax: 'https://api.halifax.co.uk/open-banking/v2.2/branches',
+        //   UlstersBank: 'https://openapi.ulsterbank.co.uk/open-banking/v2.2/branches',
+        // };
+        // const bankName = Object.values(APIcollection).filter(bank => bank === this.state.update.branch);
+        // console.log(bankName);
       });
     } else {
-      console.log('sorry something went wrong Tibi');
+      console.log('Geolocation not avail');
     }
   }
-  customFetch = (bankName, find) => {
-    const api = `https://atlas.api.${bankName}/open-banking/v2.1/${find}`
-    fetch(api)
+
+  callAPI = (lat, lng) => {
+    console.log(lat, lng);
+    fetch('https://atlas.api.barclays/open-banking/v2.2/atms')
       .then(data => data.json())
-      .then(data => this.handleResponse(data, ownLatitude, ownLongitude))
+      .then(data => this.handleResponse(data, lat, lng));
   }
 
+  updateState = (newState) => {
+    this.setState({
+      update: newState,
+    });
+  }
   handleResponse = (data, ownLatitude, ownLongitude) => {
     console.log(data);
-    if (data) {
-      const ATM = data.data[0].Brand[0].ATM;
+    const ATM = data.data[0].Brand[0].ATM;
+    // const Branch = data.data[0].Brand[0].Branch;
+    if (ATM) {
+      // const closestBranch = Branch.map((branch) => {
+      //   const a = Math.abs(ownLatitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
+      //   const b = Math.abs(ownLongitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
+      //   const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+      //   return Object.assign({}, closestBranch, { distance: c, branch, id: v4(), display: true });
+      // }).sort((a, b) => a.distance - b.distance).slice(0, 10);
       const closestATM = ATM.map((cashpoint) => {
         const a = Math.abs(ownLatitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
         const b = Math.abs(ownLongitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
@@ -51,10 +79,10 @@ class App extends Component {
 
       this.setState({
         closestATM,
+        // closestBranch,
       });
     }
   }
-
   showDetails = (id) => {
     const newState = this.state.closestATM.map((atm) => {
       if (atm.id === id) {
@@ -69,20 +97,22 @@ class App extends Component {
     return (
       <div className="App">
         <div className="componentWrapper">
-          <Search />
-          <div className="resultList">
-            {this.state.closestATM.length &&
-              <List
-                closestATM={this.state.closestATM}
-                showDetails={this.showDetails}
-                isHidden={this.state.shown}
-              />
-            }
-          </div>
+          <Search
+            handleSelected={this.handleSelected}
+            fetchData={this.updateState}
+          />
+            <div className="resultList">
+              {this.state.closestATM.length &&
+                <List
+                  closestATM={this.state.closestATM}
+                  showDetails={this.showDetails}
+                  isHidden={this.state.shown}
+                />
+              }
+            </div>
           <Navigation />
         </div>
       </div>
-
     );
   }
 }

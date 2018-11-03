@@ -1,5 +1,5 @@
 *{
-	margin:auto;
+	/* margin:auto; */
 }
 .componentWrapper {
 	margin: auto;
@@ -7,5 +7,10 @@
   height: 48rem;
   margin-top: 5rem;
 	border: 2px solid black;
-	border-radius: 10px;
+  border-radius: 10px;
+  background: url('./components/List/banki2.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

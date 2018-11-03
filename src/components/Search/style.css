@@ -2,5 +2,37 @@
 	font-size: 15pt;
 	display: flex;
 	flex-direction: column;
-	height: 40%;
+  height: 30%;
+  box-shadow:inset 0 -15px 5px -16px #111;
+}
+.zipCodeLabel {
+  margin-right: 2rem;
+}
+input {
+  width: 5rem;
+}
+.signup {
+  padding-right: 1rem;
+  border-right: 1px solid black;
+}
+.signin {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.top_navbar {
+  display: flex;
+  flex-direction: row;
+  height: 15%;
+  background-color: #4caf50f5;
+  margin: 0;
+  color: white;
+  justify-content: flex-end;
+  align-items: center;
+  color: aliceblue;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.parameters {
+  display: flex;
 }

@@ -1,7 +1,7 @@
 .resultList {
-	height: 52%;
-	background-color: tomato;
-	overflow: scroll;
+	height: 62%;
+  overflow: scroll;
+  opacity: 0.75;
 }
 .card {
 	width: -webkit-fill-available;
@@ -12,4 +12,15 @@
 
 .hidden {
 	display: none;
+}
+
+.card-subtitle {
+  text-align: right;
+  font-size: 15pt;
+}
+.btn-danger {
+  float: right;
+}
+i {
+  color: white;
 }
