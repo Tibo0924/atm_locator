@@ -1,25 +1,34 @@
 .resultList {
 	height: 62%;
   overflow: scroll;
-  opacity: 0.75;
+  opacity: 0.95;
 }
 .card {
 	width: -webkit-fill-available;
 }
+.card :hover {
+  cursor: pointer;
+  color: black;
+  background-color: green;
+  border-radius: 10px;
+}
 .card-body {
-	width: 100%;
+  width: 100%;
 }
 
 .hidden {
 	display: none;
 }
-
+.card-title {
+  font-size: 20pt;
+}
 .card-subtitle {
   text-align: right;
-  font-size: 15pt;
+  font-size: 20pt;
 }
 .btn-danger {
   float: right;
+  color: black;
 }
 i {
   color: white;

@@ -1,3 +1,4 @@
+/*eslint-disable */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { ListGroup, Button, Card, CardText, CardBody,
@@ -17,7 +18,7 @@ const List = props => (
       return (
         <Card key={elem.id} onClick={() => props.showDetails(elem.id)}>
           <CardBody>
-            <CardTitle>{index + 1} {isAddress} </CardTitle>
+            <CardTitle>{isAddress}</CardTitle>
             <CardSubtitle className={isHidden}>{PostCode}</CardSubtitle>
             <CardText className={isHidden}>
             Services{atmServices}
