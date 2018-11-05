@@ -1,9 +1,11 @@
-/* eslint-disable */
+
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
 import { v4 } from 'uuid';
 import Search from './components/Search';
 import List from './components/List';
 import Navigation from './components/Navbar';
+import Landing from './components/Landing_page/';
 import './App.css';
 
 class App extends Component {
@@ -92,29 +94,37 @@ class App extends Component {
     });
     this.setState({ closestATM: newState });
   }
-
   render() {
-    return (
-      <div className="App">
-        <div className="componentWrapper">
+    const myApp = () =>
+      (
+        <div className="kek">
           <Search
             handleSelected={this.handleSelected}
             fetchData={this.updateState}
           />
-            <div className="resultList">
-              {this.state.closestATM.length &&
-                <List
-                  closestATM={this.state.closestATM}
-                  showDetails={this.showDetails}
-                  isHidden={this.state.shown}
-                />
-              }
-            </div>
+          <div className="resultList">
+            {this.state.closestATM.length &&
+              <List
+                closestATM={this.state.closestATM}
+                showDetails={this.showDetails}
+                isHidden={this.state.shown}
+              />
+            }
+          </div>
           <Navigation />
         </div>
-      </div>
+      );
+
+    return (
+      <Router>
+        <div className="App">
+          <div className="componentWrapper">
+            <Route path="/landing" component={Landing} />
+            <Route path="/app" component={myApp} />
+          </div>
+        </div>
+      </Router>
     );
   }
 }
-
 export default App;
