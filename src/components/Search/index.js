@@ -1,25 +1,29 @@
 /* eslint-disable react/prop-types */
-
-import React from 'react';
+import React, { Component } from 'react';
+import Switch from 'react-switch';
 import './style.css';
 
-class Search extends React.Component {
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
       branch: '',
       checked: false,
     };
-    this.handleChecked = this.handleChecked.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
-  handleChecked(event) {
-    console.log(event.target.checked);
-    this.setState({
-      checked: !this.state.checked,
-    });
+
+  handleChange(checked) {
+    this.setState({ checked });
+  }
+  sendState = () => {
     this.props.fetchData(this.state);
+    console.log(' send state to main.');
+    this.props.apiCall();
+    // console.log(this.props.apiCall());
   }
   render() {
+    const isBank = this.state.checked ? 'Bank' : 'ATM';
     return (
       <div className="Searchfields" >
         <div className="top_navbar">
@@ -27,21 +31,29 @@ class Search extends React.Component {
           <div className="signin">Sign in</div>
         </div>
         <div className="parameters">
-          <div>
-            Lorem ipsum dolorem
-          </div>
+          <h2><span>{isBank}</span> locator</h2>
           <form>
-            <label className="zipCodeLabel">Search by Zip code</label>
-            <input type="text" />
-            <label>
-              Switch for bank or atm location
-              <input
-                type="checkbox"
+            <label htmlFor="normal-switch">
+              <span>Choose {isBank}</span>
+              <Switch
+                onChange={this.handleChange}
                 checked={this.state.checked}
-                onClick={e => this.setState({ checked: !e.target.checked })}
+                id="normal-switch"
               />
             </label>
-            <button>Submit</button>
+            <select name="branches" id="branches" onChange={e => this.setState({ branch: e.target.value })}>
+              <option disabled hidden />
+              <option value="tsb">TSB</option>
+              <option value="barclays">Barclays</option>
+              <option value="natwest">Natwest</option>
+              <option value="ulsterbank">ulsterbank</option>
+              <option value="halifax">Halifax</option>
+              <option value="royalbankofscotland">Royal bank of Scotland</option>
+              <option value="bankofirelanduk">Bank of Ireland (UK)</option>
+              <option value="santanders">Santanders</option>
+              <option value="lloyds">Lloyds</option>
+            </select>
+            <button className="btn" onClick={this.sendState} >Submit</button>
           </form>
         </div>
       </div>

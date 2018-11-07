@@ -13,6 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       closestATM: [],
+      closestBranch: [],
     };
   }
 
@@ -23,7 +24,6 @@ class App extends Component {
   getCurrentPosition = () => {
     console.log('getting current pos');
     if ('geolocation' in navigator) {
-      console.log(navigator);
       navigator.geolocation.getCurrentPosition((position) => {
         const ownLatitude = position.coords.latitude;
         const ownLongitude = position.coords.longitude;
@@ -50,10 +50,11 @@ class App extends Component {
   }
 
   callAPI = (lat, lng) => {
-    console.log(lat, lng);
-    fetch('https://atlas.api.barclays/open-banking/v2.2/atms')
+    const endPointEnd = this.state.checked ? 'atms' : 'branches';
+    fetch(`https://atlas.api.barclays/open-banking/v2.2/${endPointEnd}`)
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
+    console.log(this.state, 'this is the state after API call');
   }
 
   updateState = (newState) => {
@@ -61,30 +62,34 @@ class App extends Component {
       update: newState,
     });
   }
+
   handleResponse = (data, ownLatitude, ownLongitude) => {
-    console.log(data);
+    console.log('there is data no worry', data);
     const ATM = data.data[0].Brand[0].ATM;
-    // const Branch = data.data[0].Brand[0].Branch;
-    if (ATM) {
-      // const closestBranch = Branch.map((branch) => {
-      //   const a = Math.abs(ownLatitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
-      //   const b = Math.abs(ownLongitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
-      //   const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-      //   return Object.assign({}, closestBranch, { distance: c, branch, id: v4(), display: true });
-      // }).sort((a, b) => a.distance - b.distance).slice(0, 10);
+    const Branch = data.data[0].Brand[0].Branch;
+    if (!this.state.checked) {
+      const closestBranch = Branch.map((branch) => {
+        const a = Math.abs(ownLatitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
+        const b = Math.abs(ownLongitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
+        const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+        return Object.assign({}, closestBranch, { distance: c, branch, id: v4(), display: true });
+      }).sort((a, b) => a.distance - b.distance).slice(0, 10);
+      this.setState({
+        closestBranch,
+      });
+    } else {
       const closestATM = ATM.map((cashpoint) => {
         const a = Math.abs(ownLatitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
         const b = Math.abs(ownLongitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
         const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
         return Object.assign({}, closestATM, { distance: c, cashpoint, id: v4(), display: true });
       }).sort((a, b) => a.distance - b.distance).slice(0, 10);
-
       this.setState({
         closestATM,
-        // closestBranch,
       });
     }
   }
+
   showDetails = (id) => {
     const newState = this.state.closestATM.map((atm) => {
       if (atm.id === id) {
@@ -94,12 +99,13 @@ class App extends Component {
     });
     this.setState({ closestATM: newState });
   }
+
   render() {
     const myApp = () =>
       (
         <div className="kek">
           <Search
-            handleSelected={this.handleSelected}
+            apiCall={this.callAPI}
             fetchData={this.updateState}
           />
           <div className="resultList">
