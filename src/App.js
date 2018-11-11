@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, NavLink, Switch } from 'react-router-dom';
 import { v4 } from 'uuid';
 import Search from './components/Search';
 import List from './components/List';
@@ -14,6 +14,7 @@ class App extends Component {
     this.state = {
       closestATM: [],
       closestBranch: [],
+      checked: true,
     };
   }
 
@@ -29,7 +30,6 @@ class App extends Component {
         const ownLongitude = position.coords.longitude;
         console.log(ownLatitude, ownLongitude);
         this.callAPI(ownLatitude, ownLongitude);
-        // const criteria = this.state.update.checked ? 'branches' : 'atms';
         // const APIcollection = {
         //   Nationalwest: 'https://openapi.natwest.com/open-banking/v2.2/branches',
         //   Santander: 'openbanking.santander.co.uk/sanuk/external/open-banking/v2.2/branches',
@@ -50,11 +50,11 @@ class App extends Component {
   }
 
   callAPI = (lat, lng) => {
-    const endPointEnd = this.state.checked ? 'atms' : 'branches';
-    fetch(`https://atlas.api.barclays/open-banking/v2.2/${endPointEnd}`)
+    const endPointEnd = this.state.checked ? 'branches' : 'atms';
+    fetch(`https://atlas.api.barclays/open-banking/v2.1/${endPointEnd}`)
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
-    console.log(this.state, 'this is the state after API call');
+    console.log('this is the state after API call -callAPI Function-', this.state);
   }
 
   updateState = (newState) => {
@@ -64,25 +64,25 @@ class App extends Component {
   }
 
   handleResponse = (data, ownLatitude, ownLongitude) => {
-    console.log('there is data no worry', data);
-    const ATM = data.data[0].Brand[0].ATM;
-    const Branch = data.data[0].Brand[0].Branch;
-    if (!this.state.checked) {
-      const closestBranch = Branch.map((branch) => {
-        const a = Math.abs(ownLatitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
-        const b = Math.abs(ownLongitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
+    console.log('handleResponse', data);
+    if (this.state.checked && data) {
+      const Branches = data.data[0].Brand[0].Branch;
+      const closestBranch = Branches.map((datas, i) => {
+        const a = Math.abs(ownLatitude - datas.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
+        const b = Math.abs(ownLongitude - datas.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
         const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-        return Object.assign({}, closestBranch, { distance: c, branch, id: v4(), display: true });
+        return Object.assign({}, { distance: c, datas, id: v4(), display: true });
       }).sort((a, b) => a.distance - b.distance).slice(0, 10);
       this.setState({
         closestBranch,
       });
-    } else {
-      const closestATM = ATM.map((cashpoint) => {
-        const a = Math.abs(ownLatitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
-        const b = Math.abs(ownLongitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
+    } else if (data) {
+      const ATM = data.data[0].Brand[0].ATM;
+      const closestATM = ATM.map((datas) => {
+        const a = Math.abs(ownLatitude - datas.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
+        const b = Math.abs(ownLongitude - datas.Location.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
         const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-        return Object.assign({}, closestATM, { distance: c, cashpoint, id: v4(), display: true });
+        return Object.assign({}, { distance: c, datas, id: v4(), display: true });
       }).sort((a, b) => a.distance - b.distance).slice(0, 10);
       this.setState({
         closestATM,
@@ -91,13 +91,23 @@ class App extends Component {
   }
 
   showDetails = (id) => {
-    const newState = this.state.closestATM.map((atm) => {
-      if (atm.id === id) {
-        return { ...atm, display: !atm.display };
-      }
-      return atm;
-    });
-    this.setState({ closestATM: newState });
+    if (!this.state.checked) {
+      const newState = this.state.closestATM.map((atm) => {
+        if (atm.id === id) {
+          return { ...atm, display: !atm.display };
+        }
+        return atm;
+      });
+      this.setState({ closestATM: newState });
+    } else {
+      const newState = this.state.closestBranch.map((branch) => {
+        if (branch.id === id) {
+          return { ...branch, display: !branch.display };
+        }
+        return branch;
+      });
+      this.setState({ closestBranch: newState });
+    }
   }
 
   render() {
@@ -109,26 +119,29 @@ class App extends Component {
             fetchData={this.updateState}
           />
           <div className="resultList">
-            {this.state.closestATM.length &&
+            {this.state.closestATM.length || this.state.closestBranch.length ?
               <List
                 closestATM={this.state.closestATM}
+                closestBranches={this.state.closestBranch}
                 showDetails={this.showDetails}
-                isHidden={this.state.shown}
+                checked={this.state.checked}
               />
+              : 'sorry no data'
             }
           </div>
           <Navigation />
         </div>
       );
-
     return (
       <Router>
-        <div className="App">
-          <div className="componentWrapper">
-            <Route path="/landing" component={Landing} />
-            <Route path="/app" component={myApp} />
+        <Switch>
+          <div className="App">
+            <div className="componentWrapper">
+              <Route path="/" exact component={Landing} />
+              <Route path="/app" component={myApp} />
+            </div>
           </div>
-        </div>
+        </Switch>
       </Router>
     );
   }
