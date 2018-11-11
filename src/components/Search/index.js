@@ -31,16 +31,18 @@ class Search extends Component {
           <div className="signin">Sign in</div>
         </div>
         <div className="parameters">
+          <Switch
+            onChange={this.handleChange}
+            checked={this.state.checked}
+            id="normal-switch"
+          />
           <h2><span>{isBank}</span> locator</h2>
-          <form>
+          <form className="form">
             <label htmlFor="normal-switch">
-              <span>Choose {isBank}</span>
-              <Switch
-                onChange={this.handleChange}
-                checked={this.state.checked}
-                id="normal-switch"
-              />
+              {/* <span>Choose {isBank}</span> */}
             </label>
+            <br />
+            <button className="btn" onClick={this.sendState} >Search</button>
             <select name="branches" id="branches" onChange={e => this.setState({ branch: e.target.value })}>
               <option disabled hidden />
               <option value="tsb">TSB</option>
@@ -53,7 +55,6 @@ class Search extends Component {
               <option value="santanders">Santanders</option>
               <option value="lloyds">Lloyds</option>
             </select>
-            <button className="btn" onClick={this.sendState} >Submit</button>
           </form>
         </div>
       </div>
