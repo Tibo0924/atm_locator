@@ -8,11 +8,11 @@
 }
 .card :hover {
   cursor: pointer;
-  color: black;
-  background-color: green;
-  border-radius: 10px;
 }
 .card-body {
+  width: 100%;
+}
+.card-img-top {
   width: 100%;
 }
 
@@ -23,8 +23,8 @@
   font-size: 20pt;
 }
 .card-subtitle {
-  text-align: right;
-  font-size: 20pt;
+  text-align: left;
+  font-size: 15pt;
 }
 .btn-danger {
   float: right;
