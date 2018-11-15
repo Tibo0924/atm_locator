@@ -11,6 +11,8 @@
 }
 .card-body {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 .card-img-top {
   width: 100%;
@@ -32,4 +34,17 @@
 }
 i {
   color: white;
+}
+.opening-times {
+  padding-bottom: 1rem;
+}
+.bankDetails-container {
+  display: flex;
+  flex-direction: column;
+}
+.google-maps-container {
+  display: flex;
+}
+.google-maps-container p{
+  padding-left: 1rem;
 }

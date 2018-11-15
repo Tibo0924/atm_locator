@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { ListGroup, Button, Card, CardText, CardBody,
   CardTitle, CardSubtitle, CardImg } from 'reactstrap';
 import { v4 } from 'uuid';
+import 'font-awesome/css/font-awesome.min.css';
 import './style.css';
 
 const BranchList = (props) => {
@@ -22,20 +23,22 @@ const BranchList = (props) => {
         return (
           <Card key={oneBank.id} onClick={() => props.showDetails(oneBank.id)}>
             <CardBody>
-              <CardTitle>{BuildingNumber} - {StreetName}</CardTitle>
-              <CardSubtitle>{PostCode}</CardSubtitle>
+              <CardTitle>{oneBank.datas.Name} - {BuildingNumber} {StreetName}</CardTitle>
             </CardBody>
             <CardBody className={isHidden}>
             <CardImg top width="100%" src={photo} alt="Card image cap" />
+            <div className="bankDetails-container">
               <CardSubtitle>Opening Times</CardSubtitle>
               <ul className="opening-times">
               {day}
               </ul>
-              <CardText>
+              <div className="google-maps-container">
                 <Button color="danger" href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}>
                   Show it on Google maps
                 </Button>
-              </CardText>
+                <a>{PostCode}</a>
+                </div>
+            </div>
             </CardBody>
           </Card>
         );

@@ -18,9 +18,8 @@ class Search extends Component {
   }
   sendState = () => {
     this.props.fetchData(this.state);
-    console.log(' send state to main.');
+    console.log('this is being send to main component', this.state);
     this.props.apiCall();
-    // console.log(this.props.apiCall());
   }
   render() {
     const isBank = this.state.checked ? 'Bank' : 'ATM';
@@ -28,7 +27,7 @@ class Search extends Component {
       <div className="Searchfields" >
         <div className="top_navbar">
           <div className="signup">Sign up</div>
-          <div className="signin">Sign in</div>
+          <div className="signin">Sign in &nbsp;<i className="fa fa-sign-in" aria-hidden="true" /></div>
         </div>
         <div className="parameters">
           <Switch
@@ -38,22 +37,19 @@ class Search extends Component {
           />
           <h2><span>{isBank}</span> locator</h2>
           <form className="form">
-            <label htmlFor="normal-switch">
-              {/* <span>Choose {isBank}</span> */}
-            </label>
+            <label htmlFor="normal-switch" />
             <br />
             <button className="btn" onClick={this.sendState} >Search</button>
             <select name="branches" id="branches" onChange={e => this.setState({ branch: e.target.value })}>
               <option disabled hidden />
-              <option value="tsb">TSB</option>
-              <option value="barclays">Barclays</option>
-              <option value="natwest">Natwest</option>
-              <option value="ulsterbank">ulsterbank</option>
-              <option value="halifax">Halifax</option>
-              <option value="royalbankofscotland">Royal bank of Scotland</option>
-              <option value="bankofirelanduk">Bank of Ireland (UK)</option>
-              <option value="santanders">Santanders</option>
-              <option value="lloyds">Lloyds</option>
+              <option value="Barclays">Barclays</option>
+              <option value="Nationalwest">Natwest</option>
+              <option value="UlstersBank">ulsterbank</option>
+              <option value="Halifax">Halifax</option>
+              <option value="RoyalbankofScotland">Royal bank of Scotland</option>
+              <option value="BankofIrelanduk">Bank of Ireland (UK)</option>
+              <option value="Santander">Santanders</option>
+              <option value="Lloyds">Lloyds</option>
             </select>
           </form>
         </div>

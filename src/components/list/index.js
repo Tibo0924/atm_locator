@@ -6,7 +6,7 @@ import BranchList from './Branches'
 import './style.css';
 
 const List = (props) => {
-  console.log(props,'props of LIST component');
+  console.log('List component props', props);
   return (
     props.checked  ?
       <BranchList
