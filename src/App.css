@@ -1,14 +1,100 @@
 *{
 	/* margin:auto; */
 }
-.componentWrapper .kek {
-	margin: auto;
-  width: 25rem;
-  height: 48rem;
-  margin-top: 5rem;
-  border-radius: 5px;
+.kek {
+  /* width: 100%;
+  height: 100%; */
+}
+.componentWrapper  {
+  margin: auto;
+  /* height: 50rem;
+  width: 50rem; */
   border: 1px solid black;
   background-color: #5cff3b;
   background-image: linear-gradient(147deg, #5cff3b 0%, #25a6ff 69%);
-;
+}
+.card-img-top {
+  width: 50%;
+}
+
+
+/* media queries  */
+/* ----------- iPhone 5, 5S, 5C and 5SE ----------- */
+/* Portrait and Landscape */
+@media only screen
+  and (min-device-width: 320px) 
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2) {
+  .kek {
+    height: 35.5rem;
+    width: 100%;
+  }
+  #branches {
+    border-radius: 5px;
+  }
+  .nav-item {
+    font-size: 7pt;
+  }
+  .parameters {
+    font-size: 13pt;
+  }
+
+}
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 568px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: landscape) {
+    .kek {
+      width: 100%;
+    }
+    .card-img-top {
+      width: 60%;
+    }
+}
+/* ----------- iPhone 6, 6S, 7 and 8 ----------- */
+/* Portrait */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 667px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .kek {
+      height: 41.7rem;
+    }
+    .card-img-top {
+      width: 80%;
+    }
+    .card-title {
+      font-size: 14pt;
+    }
+    .card-body {
+      flex-direction: column;
+    }
+    .bankDetails-container {
+      padding-top: 1rem;
+    }
+  }
+/* Landscape */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: landscape) {
+  .card-img-top {
+    width: 60%;
+  }
+}
+
+/* ----------- iPhone X ----------- */
+/* Portrait */
+@media only screen
+  and (min-device-width: 375px)
+  and (max-device-width: 812px)
+  and (-webkit-min-device-pixel-ratio: 3)
+  and (orientation: portrait) {
+    .kek {
+      height: 50.7rem;
+    }
+
 }

@@ -15,43 +15,44 @@ class App extends Component {
       closestATM: [],
       closestBranch: [],
       checked: true,
+      update: {},
     };
   }
 
   componentDidMount() {
-    this.getCurrentPosition();
   }
 
   getCurrentPosition = () => {
-    console.log('getting current pos');
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         const ownLatitude = position.coords.latitude;
         const ownLongitude = position.coords.longitude;
-        console.log(ownLatitude, ownLongitude);
+        console.log('Latitude', ownLatitude, 'Longitude', ownLongitude);
         this.callAPI(ownLatitude, ownLongitude);
-        // const APIcollection = {
-        //   Nationalwest: 'https://openapi.natwest.com/open-banking/v2.2/branches',
-        //   Santander: 'openbanking.santander.co.uk/sanuk/external/open-banking/v2.2/branches',
-        //   Lloyds: 'https://api.lloydsbank.com/open-banking/v2.2/branches',
-        //   Barclays: 'https://atlas.api.barclays/open-banking/v2.2/branches',
-        //   BankofIrelanduk: 'https://openapi.bankofireland.com/open-banking/v2.2/branches',
-        //   Bankofscotland: 'https://api.bankofscotland.co.uk/open-banking/v2.2/branches',
-        //   RoyalbankofScotland: 'https://openapi.rbs.co.uk/open-banking/v2.2/branches',
-        //   Halifax: 'https://api.halifax.co.uk/open-banking/v2.2/branches',
-        //   UlstersBank: 'https://openapi.ulsterbank.co.uk/open-banking/v2.2/branches',
-        // };
-        // const bankName = Object.values(APIcollection).filter(bank => bank === this.state.update.branch);
-        // console.log(bankName);
       });
     } else {
       console.log('Geolocation not avail');
     }
   }
-
+  chosenBankApi = () => {
+    const APIcollection = {
+      Nationalwest: 'https://openapi.natwest.com/open-banking/v2.2/',
+      Santander: 'openbanking.santander.co.uk/sanuk/external/open-banking/v2.2/',
+      Lloyds: 'https://api.lloydsbank.com/open-banking/v2.2/',
+      Barclays: 'https://atlas.api.barclays/open-banking/v2.2/',
+      BankofIrelanduk: 'https://openapi.bankofireland.com/open-banking/v2.2/',
+      Bankofscotland: 'https://api.bankofscotland.co.uk/open-banking/v2.2/',
+      RoyalbankofScotland: 'https://openapi.rbs.co.uk/open-banking/v2.2/',
+      Halifax: 'https://api.halifax.co.uk/open-banking/v2.2/=',
+      UlstersBank: 'https://openapi.ulsterbank.co.uk/open-banking/v2.2/',
+    };
+    console.log(APIcollection[this.state.update.branch]);
+    return APIcollection[this.state.update.branch];
+  }
   callAPI = (lat, lng) => {
+    console.log(this.chosenBankApi());
     const endPointEnd = this.state.checked ? 'branches' : 'atms';
-    fetch(`https://atlas.api.barclays/open-banking/v2.1/${endPointEnd}`)
+    fetch(`${this.chosenBankApi()}${endPointEnd}`)
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
     console.log('this is the state after API call -callAPI Function-', this.state);
@@ -64,7 +65,6 @@ class App extends Component {
   }
 
   handleResponse = (data, ownLatitude, ownLongitude) => {
-    console.log('handleResponse', data);
     if (this.state.checked && data) {
       const Branches = data.data[0].Brand[0].Branch;
       const closestBranch = Branches.map((datas, i) => {
@@ -126,7 +126,7 @@ class App extends Component {
                 showDetails={this.showDetails}
                 checked={this.state.checked}
               />
-              : 'sorry no data'
+              : ''
             }
           </div>
           <Navigation />
