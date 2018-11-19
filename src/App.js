@@ -1,8 +1,7 @@
 
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, NavLink, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { v4 } from 'uuid';
-import Search from './components/Search';
 import List from './components/List';
 import Navigation from './components/Navbar';
 import Landing from './components/Landing_page/';
@@ -15,11 +14,12 @@ class App extends Component {
       closestATM: [],
       closestBranch: [],
       checked: true,
-      update: {},
     };
   }
 
   componentDidMount() {
+    this.fetchForAtm();
+    this.fetchForBranches();
   }
 
   getCurrentPosition = () => {
@@ -28,45 +28,28 @@ class App extends Component {
         const ownLatitude = position.coords.latitude;
         const ownLongitude = position.coords.longitude;
         console.log('Latitude', ownLatitude, 'Longitude', ownLongitude);
-        this.callAPI(ownLatitude, ownLongitude);
+        this.fetchForAtm(ownLatitude, ownLongitude);
+        this.fetchForBranches(ownLatitude, ownLongitude);
       });
     } else {
       console.log('Geolocation not avail');
     }
   }
-  chosenBankApi = () => {
-    const APIcollection = {
-      Nationalwest: 'https://openapi.natwest.com/open-banking/v2.2/',
-      Santander: 'openbanking.santander.co.uk/sanuk/external/open-banking/v2.2/',
-      Lloyds: 'https://api.lloydsbank.com/open-banking/v2.2/',
-      Barclays: 'https://atlas.api.barclays/open-banking/v2.2/',
-      BankofIrelanduk: 'https://openapi.bankofireland.com/open-banking/v2.2/',
-      Bankofscotland: 'https://api.bankofscotland.co.uk/open-banking/v2.2/',
-      RoyalbankofScotland: 'https://openapi.rbs.co.uk/open-banking/v2.2/',
-      Halifax: 'https://api.halifax.co.uk/open-banking/v2.2/=',
-      UlstersBank: 'https://openapi.ulsterbank.co.uk/open-banking/v2.2/',
-    };
-    console.log(APIcollection[this.state.update.branch]);
-    return APIcollection[this.state.update.branch];
-  }
-  callAPI = (lat, lng) => {
-    console.log(this.chosenBankApi());
-    const endPointEnd = this.state.checked ? 'branches' : 'atms';
-    fetch(`${this.chosenBankApi()}${endPointEnd}`)
+  fetchForAtm = (lat, lng) => {
+    fetch('https://atlas.api.barclays/open-banking/v2.2/atms')
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
-    console.log('this is the state after API call -callAPI Function-', this.state);
   }
-
-  updateState = (newState) => {
-    this.setState({
-      update: newState,
-    });
+  fetchForBranches = (lat, lng) => {
+    fetch('https://atlas.api.barclays/open-banking/v2.2/branches')
+      .then(data => data.json())
+      .then(data => this.handleResponse(data, lat, lng));
   }
 
   handleResponse = (data, ownLatitude, ownLongitude) => {
-    if (this.state.checked && data) {
-      const Branches = data.data[0].Brand[0].Branch;
+    console.log(data);
+    const Branches = data.data[0].Brand[0].Branch;
+    if (Branches) {
       const closestBranch = Branches.map((datas, i) => {
         const a = Math.abs(ownLatitude - datas.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
         const b = Math.abs(ownLongitude - datas.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
@@ -76,7 +59,7 @@ class App extends Component {
       this.setState({
         closestBranch,
       });
-    } else if (data) {
+    } else {
       const ATM = data.data[0].Brand[0].ATM;
       const closestATM = ATM.map((datas) => {
         const a = Math.abs(ownLatitude - datas.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
@@ -113,23 +96,21 @@ class App extends Component {
   render() {
     const myApp = () =>
       (
-        <div className="kek">
-          <Search
-            apiCall={this.callAPI}
-            fetchData={this.updateState}
-          />
-          <div className="resultList">
-            {this.state.closestATM.length || this.state.closestBranch.length ?
-              <List
-                closestATM={this.state.closestATM}
-                closestBranches={this.state.closestBranch}
-                showDetails={this.showDetails}
-                checked={this.state.checked}
-              />
-              : ''
-            }
-          </div>
+        <div>
           <Navigation />
+          <div className="top-bar">
+            <h2>Hello</h2>
+            <button>This</button>
+            <p>lorem ipsum dolorem bla bla bla </p>
+          </div>
+          <div className="resultList">
+            <List
+              closestATM={this.state.closestATM}
+              closestBranches={this.state.closestBranch}
+              showDetails={this.showDetails}
+              checked={this.state.checked}
+            />
+          </div>
         </div>
       );
     return (

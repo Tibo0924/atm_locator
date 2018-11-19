@@ -1,21 +1,16 @@
 *{
 	/* margin:auto; */
 }
-.kek {
-  /* width: 100%;
-  height: 100%; */
+.topBar {
+  height: 80%;
 }
 .componentWrapper  {
-  margin: auto;
-  /* height: 50rem;
-  width: 50rem; */
+  height: 100vh;
   border: 1px solid black;
   background-color: #5cff3b;
   background-image: linear-gradient(147deg, #5cff3b 0%, #25a6ff 69%);
 }
-.card-img-top {
-  width: 50%;
-}
+
 
 
 /* media queries  */
@@ -25,10 +20,6 @@
   and (min-device-width: 320px) 
   and (max-device-width: 568px)
   and (-webkit-min-device-pixel-ratio: 2) {
-  .kek {
-    height: 35.5rem;
-    width: 100%;
-  }
   #branches {
     border-radius: 5px;
   }
@@ -38,6 +29,12 @@
   .parameters {
     font-size: 13pt;
   }
+  .card-body {
+    flex-direction: column;
+  }
+  .card-title: {
+    font-size: 14pt;
+  }
 
 }
 @media only screen
@@ -45,9 +42,6 @@
   and (max-device-width: 568px)
   and (-webkit-min-device-pixel-ratio: 2)
   and (orientation: landscape) {
-    .kek {
-      width: 100%;
-    }
     .card-img-top {
       width: 60%;
     }
@@ -59,12 +53,6 @@
   and (max-device-width: 667px)
   and (-webkit-min-device-pixel-ratio: 2)
   and (orientation: portrait) {
-    .kek {
-      height: 41.7rem;
-    }
-    .card-img-top {
-      width: 80%;
-    }
     .card-title {
       font-size: 14pt;
     }
@@ -86,15 +74,3 @@
   }
 }
 
-/* ----------- iPhone X ----------- */
-/* Portrait */
-@media only screen
-  and (min-device-width: 375px)
-  and (max-device-width: 812px)
-  and (-webkit-min-device-pixel-ratio: 3)
-  and (orientation: portrait) {
-    .kek {
-      height: 50.7rem;
-    }
-
-}
