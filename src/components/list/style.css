@@ -41,10 +41,12 @@ i {
 .bankDetails-container {
   display: flex;
   flex-direction: column;
+  padding-top: 1rem;
 }
-.google-maps-container {
-  display: flex;
-}
+
 .google-maps-container p{
   padding-left: 1rem;
+}
+.google-maps-container button {
+  margin-right: 1rem;
 }

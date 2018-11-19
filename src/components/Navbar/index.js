@@ -11,16 +11,16 @@ const Navigation = () => (
       </a>
       <label htmlFor="icons">Buy me a coffee</label>
     </div>
-    <div className="nav-item">
+    {/* <div className="nav-item">
       <i className="fa fa-share-square-o" aria-hidden="true" />
       <label htmlFor="icons">Share </label>
-    </div>
-    <div className="nav-item">
+    </div> */}
+    {/* <div className="nav-item">
       <a>
         <i className="fa fa-ellipsis-h" />
       </a>
       <label htmlFor="icons">Other</label>
-    </div>
+    </div> */}
     <div className="nav-item">
       <a href="https://tiborkeri.com" target="_blank" rel="noopener noreferrer">
         <i className="fa fa-user-circle-o" aria-hidden="true" />

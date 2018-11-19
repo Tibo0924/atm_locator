@@ -1,6 +1,6 @@
 /*eslint-disable*/;
 import React,{Component} from 'react';
-import { ListGroup, Button, Card, CardText, CardBody,
+import { ListGroup, Button, Card, CardText,
   CardTitle, CardSubtitle } from 'reactstrap';
 import { v4 } from 'uuid';
 import './style.css';

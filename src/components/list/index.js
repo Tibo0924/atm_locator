@@ -8,15 +8,15 @@ import './style.css';
 const List = (props) => {
   console.log('List component props', props);
   return (
-    props.checked  ?
-      <BranchList
-        bankData={props.closestBranches}
-        showDetails={props.showDetails}
+      props.checked  ?
+        <BranchList
+          bankData={props.closestBranches}
+          showDetails={props.showDetails}
+        />
+      :
+      <ATMS adat={props.closestATM}
+          showDetails={props.showDetails}
       />
-     :
-     <ATMS adat={props.closestATM}
-        showDetails={props.showDetails}
-     />
   )
 }
 export default List;
