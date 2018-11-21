@@ -14,7 +14,7 @@ const BranchList = (props) => {
       {props.bankData.map((oneBank, index) => {
         const geo = oneBank.datas.PostalAddress.GeoLocation.GeographicCoordinates;
         const { PostCode ,StreetName, BuildingNumber} = oneBank.datas.PostalAddress;
-        const isHidden = oneBank.display ? 'hidden' : '';
+        const isHidden = oneBank.display ? 'hidden' : 'visible';
         const photo = oneBank.datas.Photo;
         const availability = oneBank.datas.Availability.StandardAvailability.Day;
         const day = availability.map(day =>
@@ -36,7 +36,7 @@ const BranchList = (props) => {
                 <Button color="danger" href={`https://maps.google.com/maps?q=${geo.Latitude},${geo.Longitude}`}>
                   Show it on Google maps
                 </Button>
-                <a>{PostCode}</a>
+                <p>{PostCode}</p>
                 </div>
             </div>
             </CardBody>

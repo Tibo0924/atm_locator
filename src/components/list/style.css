@@ -3,6 +3,9 @@
   overflow: scroll;
   opacity: 0.95;
 }
+.app-wrapper {
+  width: 60%;
+}
 .card {
 	width: -webkit-fill-available;
 }
@@ -13,19 +16,33 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+ 
 }
+.visible {
+  height: 10px;
+  transition:height 0.9s ease-out 0s;
+}
+.visible:hover {
+  height: 550px;
+}
+
+
+
 .card-img-top {
   width: 100%;
+  border-radius: 5px;
+  box-shadow: 2px 3px 4px 0px #00000052;
 }
 
 .hidden {
 	display: none;
 }
 .card-title {
-  font-size: 20pt;
+  font-size: 12pt;
 }
 .card-subtitle {
   text-align: left;
+  padding-left: 10px;
   font-size: 15pt;
 }
 .btn-danger {
@@ -42,11 +59,12 @@ i {
   display: flex;
   flex-direction: column;
   padding-top: 1rem;
+  font-size: 10pt;
 }
 
-.google-maps-container p{
-  padding-left: 1rem;
+.google-maps-container .btn {
+  margin-left: 1rem;
 }
-.google-maps-container button {
-  margin-right: 1rem;
+.google-maps-container p {
+  text-align: right;
 }

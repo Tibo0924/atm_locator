@@ -18,7 +18,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.fetchForAtm();
     this.fetchForBranches();
   }
 
@@ -74,15 +73,7 @@ class App extends Component {
   }
 
   showDetails = (id) => {
-    if (!this.state.checked) {
-      const newState = this.state.closestATM.map((atm) => {
-        if (atm.id === id) {
-          return { ...atm, display: !atm.display };
-        }
-        return atm;
-      });
-      this.setState({ closestATM: newState });
-    } else {
+    if (this.state.checked) {
       const newState = this.state.closestBranch.map((branch) => {
         if (branch.id === id) {
           return { ...branch, display: !branch.display };
@@ -90,18 +81,31 @@ class App extends Component {
         return branch;
       });
       this.setState({ closestBranch: newState });
+    } else {
+      const newState = this.state.closestATM.map((atm) => {
+        if (atm.id === id) {
+          return { ...atm, display: !atm.display };
+        }
+        return atm;
+      });
+      this.setState({ closestATM: newState });
     }
+  }
+  switchButton = () => {
+    this.setState({
+      checked: !this.state.checked,
+    });
+    this.fetchForAtm();
   }
 
   render() {
     const myApp = () =>
       (
-        <div>
+        <div className="app-wrapper">
           <Navigation />
           <div className="top-bar">
-            <h2>Hello</h2>
-            <button>This</button>
-            <p>lorem ipsum dolorem bla bla bla </p>
+            <button onClick={this.switchButton}>ATM</button>
+            <p>Barclays branches</p>
           </div>
           <div className="resultList">
             <List

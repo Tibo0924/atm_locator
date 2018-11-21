@@ -5,12 +5,12 @@ import './style.css';
 
 const Navigation = () => (
   <Navbar className="navbar navbar-expand-lg">
-    <div className="nav-item">
+    {/* <div className="nav-item">
       <a href="buymeacoff.ee/dN0zCMVqU">
         <i className="fa fa-coffee" aria-hidden="true" />
       </a>
       <label htmlFor="icons">Buy me a coffee</label>
-    </div>
+    </div> */}
     {/* <div className="nav-item">
       <i className="fa fa-share-square-o" aria-hidden="true" />
       <label htmlFor="icons">Share </label>
