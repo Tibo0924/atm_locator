@@ -4,6 +4,15 @@
 .topBar {
   height: 80%;
 }
+.top-bar button {
+  border-radius: 5px;
+  font-weight: 600;
+  margin: 5px
+}
+.top-bar p {
+  text-align: center;
+  font-weight: 600;
+}
 .componentWrapper  {
   display: flex;
   height: 100vh;
@@ -48,6 +57,10 @@
     }
     .card-img-top {
       border-radius: 10px;
+    }
+    .app-wrapper {
+      width: 100%;
+      height: auto;
     }
 
 }
@@ -95,15 +108,16 @@
   and (max-device-width: 812px)
   and (-webkit-min-device-pixel-ratio: 2)
   and (orientation: landscape) {
-    .google-maps-container p {
-      text-align: right;
+    .app-wrapper {
+      width: 100%;
+      height: auto;
     }
 
 }
-
+/* 
 @media (min-width: 400px) and (max-width:  880px) {
   .card-body {
-    flex-direction: column;
+    flex-direction: row;
   }
 }
 
@@ -112,6 +126,4 @@
     flex-direction: column;
     display: flex;
 
-  }
-
-}
+  } */

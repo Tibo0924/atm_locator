@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import { Heading } from 'rebass';
 import { Hero } from 'react-landing-page';
@@ -7,7 +9,7 @@ import './style.css';
 const Landing = () =>
   (
     <Hero className="landing">
-      <Heading> <span>Bank</span>Locator</Heading>
+      <Heading>Bank Locator</Heading>
       <Link to="/app">Next</Link>
     </Hero>
   );

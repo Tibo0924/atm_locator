@@ -18,7 +18,7 @@ const BranchList = (props) => {
         const photo = oneBank.datas.Photo;
         const availability = oneBank.datas.Availability.StandardAvailability.Day;
         const day = availability.map(day =>
-            <li>{day.Name} - {day.OpeningHours[0].OpeningTime.slice(0,5)} - {day.OpeningHours[0].ClosingTime.slice(0,5)}</li>
+            <li key={v4()}>{day.Name} - {day.OpeningHours[0].OpeningTime.slice(0,5)} - {day.OpeningHours[0].ClosingTime.slice(0,5)}</li>
           )
         return (
           <Card key={oneBank.id} onClick={() => props.showDetails(oneBank.id)}>

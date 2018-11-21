@@ -18,7 +18,6 @@ const ATMS = (props) => {
       const isAddress = address ? `${address} - ${StreetName}` : `${StreetName}`;
       return (
         <Card key={oneBank.id} onClick={() => props.showDetails(oneBank.id)}>
-          {/* <CardBody> */}
             <CardTitle>{index + 1} {isAddress} </CardTitle>
             <CardSubtitle className={isHidden}>{PostCode}</CardSubtitle>
             <CardText className={isHidden}>

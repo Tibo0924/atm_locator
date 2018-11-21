@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 .resultList {
 	height: 62%;
   overflow: scroll;
@@ -16,18 +18,10 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
- 
 }
 .visible {
-  height: 10px;
   transition:height 0.9s ease-out 0s;
 }
-.visible:hover {
-  height: 550px;
-}
-
-
-
 .card-img-top {
   width: 100%;
   border-radius: 5px;
@@ -61,7 +55,6 @@ i {
   padding-top: 1rem;
   font-size: 10pt;
 }
-
 .google-maps-container .btn {
   margin-left: 1rem;
 }
