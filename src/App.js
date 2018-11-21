@@ -120,7 +120,7 @@ class App extends Component {
         </div>
       );
     return (
-      <Router>
+      <Router basename="main">
         <Switch>
           <div className="App">
             <div className="componentWrapper">
