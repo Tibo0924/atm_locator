@@ -2,7 +2,7 @@
   "name": "cashpoint_finder",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://tibo0924.github.io/atm_locator",
+  "homepage": "https://tibo0924.github.io/atm_locator",
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.1.3",
     "autoprefixer": "7.1.6",
