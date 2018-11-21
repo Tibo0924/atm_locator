@@ -16,6 +16,7 @@ class App extends Component {
       closestATM: [],
       closestBranch: [],
       checked: true,
+      next: false,
     };
   }
 
@@ -99,9 +100,14 @@ class App extends Component {
     });
     this.fetchForAtm();
   }
+  next = () => {
+    this.setState({
+      next: true,
+    });
+  }
 
   render() {
-    const myApp = () =>
+    const MyApp = () =>
       (
         <div className="app-wrapper">
           <Navigation />
@@ -120,16 +126,11 @@ class App extends Component {
         </div>
       );
     return (
-      <Router basename={process.env.PUBLIC_URL}>
-        <Switch>
-          <div className="App">
-            <div className="componentWrapper">
-              <Route path="/" exact component={Landing} />
-              <Route path="/app" component={myApp} />
-            </div>
-          </div>
-        </Switch>
-      </Router>
+      <div className="App">
+        <div className="componentWrapper">
+          {this.state.next ? <MyApp /> : <Landing next={this.next} /> }
+        </div>
+      </div>
     );
   }
 }

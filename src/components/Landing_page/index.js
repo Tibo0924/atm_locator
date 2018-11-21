@@ -3,14 +3,14 @@
 import React from 'react';
 import { Heading } from 'rebass';
 import { Hero } from 'react-landing-page';
-import { Link } from 'react-router-dom';
 import './style.css';
+import { geoPropTypes } from 'react-geolocated';
 
-const Landing = () =>
+const Landing = (props) =>
   (
     <Hero className="landing">
       <Heading>Bank Locator</Heading>
-      <Link to="/app">Next</Link>
+      <button onClick={props.next}>Next</button>
     </Hero>
   );
 export default Landing;
