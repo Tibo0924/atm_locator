@@ -1,9 +1,13 @@
-/* eslint-disable */
+/* eslint-disable jsx-a11y/no-redundant-roles */
+/* eslint-disable jsx-a11y/accessible-emoji */
+/* eslint-disable no-console */
+
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { v4 } from 'uuid';
-import Search from './components/Search';
 import List from './components/List';
 import Navigation from './components/Navbar';
+import Landing from './components/Landing_page/';
 import './App.css';
 
 class App extends Component {
@@ -11,110 +15,123 @@ class App extends Component {
     super(props);
     this.state = {
       closestATM: [],
+      closestBranch: [],
+      checked: true,
     };
   }
 
   componentDidMount() {
-    this.getCurrentPosition();
+    this.fetchForBranches();
   }
 
   getCurrentPosition = () => {
-    console.log('getting current pos');
     if ('geolocation' in navigator) {
-      console.log(navigator);
       navigator.geolocation.getCurrentPosition((position) => {
         const ownLatitude = position.coords.latitude;
         const ownLongitude = position.coords.longitude;
-        console.log(ownLatitude, ownLongitude);
-        this.callAPI(ownLatitude, ownLongitude);
-        // const criteria = this.state.update.checked ? 'branches' : 'atms';
-        // const APIcollection = {
-        //   Nationalwest: 'https://openapi.natwest.com/open-banking/v2.2/branches',
-        //   Santander: 'openbanking.santander.co.uk/sanuk/external/open-banking/v2.2/branches',
-        //   Lloyds: 'https://api.lloydsbank.com/open-banking/v2.2/branches',
-        //   Barclays: 'https://atlas.api.barclays/open-banking/v2.2/branches',
-        //   BankofIrelanduk: 'https://openapi.bankofireland.com/open-banking/v2.2/branches',
-        //   Bankofscotland: 'https://api.bankofscotland.co.uk/open-banking/v2.2/branches',
-        //   RoyalbankofScotland: 'https://openapi.rbs.co.uk/open-banking/v2.2/branches',
-        //   Halifax: 'https://api.halifax.co.uk/open-banking/v2.2/branches',
-        //   UlstersBank: 'https://openapi.ulsterbank.co.uk/open-banking/v2.2/branches',
-        // };
-        // const bankName = Object.values(APIcollection).filter(bank => bank === this.state.update.branch);
-        // console.log(bankName);
+        console.log('Latitude', ownLatitude, 'Longitude', ownLongitude);
+        this.fetchForAtm(ownLatitude, ownLongitude);
+        this.fetchForBranches(ownLatitude, ownLongitude);
       });
     } else {
       console.log('Geolocation not avail');
     }
   }
-
-  callAPI = (lat, lng) => {
-    console.log(lat, lng);
-    fetch('https://atlas.api.barclays/open-banking/v2.2/atms')
+  fetchForAtm = (lat, lng) => {
+    fetch('https://atlas.api.barclays/open-banking/v2.1/atms')
+      .then(data => data.json())
+      .then(data => this.handleResponse(data, lat, lng));
+  }
+  fetchForBranches = (lat, lng) => {
+    fetch('https://atlas.api.barclays/open-banking/v2.2/branches')
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
   }
 
-  updateState = (newState) => {
-    this.setState({
-      update: newState,
-    });
-  }
   handleResponse = (data, ownLatitude, ownLongitude) => {
     console.log(data);
-    const ATM = data.data[0].Brand[0].ATM;
-    // const Branch = data.data[0].Brand[0].Branch;
-    if (ATM) {
-      // const closestBranch = Branch.map((branch) => {
-      //   const a = Math.abs(ownLatitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
-      //   const b = Math.abs(ownLongitude - branch.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
-      //   const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-      //   return Object.assign({}, closestBranch, { distance: c, branch, id: v4(), display: true });
-      // }).sort((a, b) => a.distance - b.distance).slice(0, 10);
-      const closestATM = ATM.map((cashpoint) => {
-        const a = Math.abs(ownLatitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
-        const b = Math.abs(ownLongitude - cashpoint.Location.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
+    const Branches = data.data[0].Brand[0].Branch;
+    if (Branches) {
+      const closestBranch = Branches.map((datas, i) => {
+        const a = Math.abs(ownLatitude - datas.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
+        const b = Math.abs(ownLongitude - datas.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
         const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
-        return Object.assign({}, closestATM, { distance: c, cashpoint, id: v4(), display: true });
+        return Object.assign({}, { distance: c, datas, id: v4(), display: true });
       }).sort((a, b) => a.distance - b.distance).slice(0, 10);
-
+      this.setState({
+        closestBranch,
+      });
+    } else {
+      const ATM = data.data[0].Brand[0].ATM;
+      const closestATM = ATM.map((datas) => {
+        const a = Math.abs(ownLatitude - datas.Location.PostalAddress.GeoLocation.GeographicCoordinates.Latitude);
+        const b = Math.abs(ownLongitude - datas.Location.PostalAddress.GeoLocation.GeographicCoordinates.Longitude);
+        const c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+        return Object.assign({}, { distance: c, datas, id: v4(), display: true });
+      }).sort((a, b) => a.distance - b.distance).slice(0, 10);
       this.setState({
         closestATM,
-        // closestBranch,
       });
     }
   }
+
   showDetails = (id) => {
-    const newState = this.state.closestATM.map((atm) => {
-      if (atm.id === id) {
-        return { ...atm, display: !atm.display };
-      }
-      return atm;
+    if (this.state.checked) {
+      const newState = this.state.closestBranch.map((branch) => {
+        if (branch.id === id) {
+          return { ...branch, display: !branch.display };
+        }
+        return branch;
+      });
+      this.setState({ closestBranch: newState });
+    } else {
+      const newState = this.state.closestATM.map((atm) => {
+        if (atm.id === id) {
+          return { ...atm, display: !atm.display };
+        }
+        return atm;
+      });
+      this.setState({ closestATM: newState });
+    }
+  }
+  switchButton = () => {
+    this.setState({
+      checked: !this.state.checked,
     });
-    this.setState({ closestATM: newState });
+    this.fetchForAtm();
   }
 
   render() {
-    return (
-      <div className="App">
-        <div className="componentWrapper">
-          <Search
-            handleSelected={this.handleSelected}
-            fetchData={this.updateState}
-          />
-            <div className="resultList">
-              {this.state.closestATM.length &&
-                <List
-                  closestATM={this.state.closestATM}
-                  showDetails={this.showDetails}
-                  isHidden={this.state.shown}
-                />
-              }
-            </div>
+    const myApp = () =>
+      (
+        <div className="app-wrapper">
           <Navigation />
+          <div className="top-bar">
+            <button onClick={this.switchButton}>ATM</button>
+            <p>Barclays branches</p>
+          </div>
+          <div className="resultList">
+            <List
+              closestATM={this.state.closestATM}
+              closestBranches={this.state.closestBranch}
+              showDetails={this.showDetails}
+              checked={this.state.checked}
+            />
+          </div>
         </div>
-      </div>
+      );
+    return (
+      <Router>
+        <Switch>
+          <div className="App">
+            <div className="componentWrapper">
+              <Route path="/" exact component={Landing} />
+              <Route path="/app" component={myApp} />
+            </div>
+          </div>
+        </Switch>
+      </Router>
     );
   }
 }
-
 export default App;

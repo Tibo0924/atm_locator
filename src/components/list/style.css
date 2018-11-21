@@ -1,26 +1,63 @@
+/* eslint-disable */
+
 .resultList {
 	height: 62%;
   overflow: scroll;
-  opacity: 0.75;
+  opacity: 0.95;
+}
+.app-wrapper {
+  width: 60%;
 }
 .card {
 	width: -webkit-fill-available;
 }
+.card :hover {
+  cursor: pointer;
+}
 .card-body {
-	width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.visible {
+  transition:height 0.9s ease-out 0s;
+}
+.card-img-top {
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 2px 3px 4px 0px #00000052;
 }
 
 .hidden {
 	display: none;
 }
-
+.card-title {
+  font-size: 12pt;
+}
 .card-subtitle {
-  text-align: right;
+  text-align: left;
+  padding-left: 10px;
   font-size: 15pt;
 }
 .btn-danger {
   float: right;
+  color: black;
 }
 i {
   color: white;
+}
+.opening-times {
+  padding-bottom: 1rem;
+}
+.bankDetails-container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  font-size: 10pt;
+}
+.google-maps-container .btn {
+  margin-left: 1rem;
+}
+.google-maps-container p {
+  text-align: right;
 }
