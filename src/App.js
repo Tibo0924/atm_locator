@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/no-redundant-roles */
 /* eslint-disable jsx-a11y/accessible-emoji */
 /* eslint-disable no-console */
-
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { v4 } from 'uuid';
@@ -38,12 +37,12 @@ class App extends Component {
     }
   }
   fetchForAtm = (lat, lng) => {
-    fetch('https://atlas.api.barclays/open-banking/v2.1/atms')
+    fetch('https://cors.io/?https://atlas.api.barclays/open-banking/v2.1/atms')
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
   }
   fetchForBranches = (lat, lng) => {
-    fetch('https://atlas.api.barclays/open-banking/v2.2/branches')
+    fetch('https://cors.io/?https://atlas.api.barclays/open-banking/v2.2/branches')
       .then(data => data.json())
       .then(data => this.handleResponse(data, lat, lng));
   }
