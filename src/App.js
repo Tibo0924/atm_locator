@@ -120,7 +120,7 @@ class App extends Component {
         </div>
       );
     return (
-      <Router basename="main">
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <div className="App">
             <div className="componentWrapper">
